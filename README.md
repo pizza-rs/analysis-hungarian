@@ -1,48 +1,62 @@
-# pizza-analysis-hungarian
+<div align="center">
 
-Hungarian language analysis with 4-step light stemmer and stop words.
+# 🇭🇺 pizza-analysis-hungarian
 
-Part of the [Pizza](https://pizza.rs) search engine.
+**Hungarian text analysis plugin for [INFINI Pizza](https://pizza.rs)**
+
+[![Crate](https://img.shields.io/badge/crate-pizza--analysis--hungarian-blue)](https://github.com/pizza-rs/analysis-hungarian)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+</div>
+
+---
+
+## Overview
+
+Hungarian language analysis with a light stemmer and stop words. Hungarian is an
+agglutinative language with extensive suffixation — the light stemmer provides
+conservative reduction without over-stemming compound forms.
 
 ## Components
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hungarian_stem` | Token Filter | Hungarian 4-step light stemmer: case → possessive → plural → vowel normalization (á→a, é→e) |
-| `hungarian_stop` | Token Filter | Hungarian stop words filter (198 words) |
-| `hungarian` | Analyzer | Full pipeline: lowercase → stop → stem |
+| Type | Name | Description |
+|:-----|:-----|:------------|
+| TokenFilter | `hungarian_light_stem` | Hungarian light stemmer |
+| TokenFilter | `hungarian_stop` | Hungarian stop words (198 entries) |
+| Analyzer | `hungarian` | Full pipeline: lowercase → light_stem → stop |
 
-## Usage
+## Example
 
-### Built-in Analyzer
+```rust
+use pizza_engine::analysis::AnalysisFactory;
 
-```json
-{
-  "analyzer": {
-    "type": "hungarian"
-  }
-}
+let mut factory = AnalysisFactory::new();
+pizza_analysis_hungarian::register_all(&mut factory);
+
+let analyzer = factory.get_analyzer("hungarian").unwrap();
+// "házakat" (houses, accusative) → "ház"
 ```
 
-### Custom Pipeline
+## Installation
 
-```json
-{
-  "analyzer": {
-    "type": "custom",
-    "tokenizer": "standard",
-    "filter": ["hungarian_stem", "hungarian_stop"]
-  }
-}
+```toml
+[dependencies]
+pizza-analysis-hungarian = "0.1"
+```
+
+Or via `pizza-analysis-all`:
+
+```toml
+[dependencies]
+pizza-analysis-all = { version = "0.1", features = ["hungarian"] }
 ```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
 
-## Related Crates
+---
 
-- [analysis-core](https://github.com/pizza-rs/analysis-core) — Core analysis components and pipeline
-- [analysis-icu](https://github.com/pizza-rs/analysis-icu) — ICU Unicode normalization and tokenization
-- [analysis-english](https://github.com/pizza-rs/analysis-english) — English analysis
-- [analysis-all](https://github.com/pizza-rs/analysis-all) — Meta-crate registering all analyzers
+<div align="center">
+<sub>Part of the <a href="https://pizza.rs">INFINI Pizza</a> ecosystem</sub>
+</div>
