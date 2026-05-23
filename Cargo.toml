@@ -2,7 +2,7 @@
 name = "pizza-analysis-hungarian"
 version = "0.1.0"
 edition = "2021"
-description = "Hungarian language analysis components for Pizza search engine"
+description = "Hungarian text analysis plugin for INFINI Pizza"
 license = "MIT"
 
 [features]
